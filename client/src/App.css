@@ -1,9 +1,9 @@
 
   .container {
-    --uib-size: 40px;
+    --uib-size: 10px;
     --uib-color: white;
     --uib-speed: 1.3s;
-    --uib-dot-size: 25%;
+    --uib-dot-size: 2%;
     position: relative;
     display: inline-block;
     height: var(--uib-size);
