@@ -1,6 +1,3 @@
-import { useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 import Bible from "./components/Bible";
 import Navbar from "./components/Navbar";
 
