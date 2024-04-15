@@ -7,7 +7,7 @@ const ChaptersDropdown = ({
   setShowChapters,
   onChange,
   chapterOptions,
-  setIsbookDropdownFocused,
+  setIsBookDropdownFocused,
 }) => {
   const { selectedChapter } = useBibleContext();
   const styles = {
@@ -31,7 +31,7 @@ const ChaptersDropdown = ({
       borderRadius: "30%", // Circular edges
       fontSize: "12px", // Font size to ensure text fits
       padding: 0,
-      margin: 2,
+      margin: 0,
     }),
   };
 
@@ -47,8 +47,8 @@ const ChaptersDropdown = ({
         openMenuOnClick={true}
         placeholder={"1"}
         value={selectedChapter}
-        onFocus={() => setIsbookDropdownFocused(true)}
-        onBlur={() => setIsbookDropdownFocused(false)}
+        onFocus={() => setIsBookDropdownFocused(true)}
+        onBlur={() => setIsBookDropdownFocused(false)}
       />
     </div>
   );
