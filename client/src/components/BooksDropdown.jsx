@@ -1,7 +1,9 @@
 import React from "react";
 import Select from "react-select";
+import { useBibleContext } from "../contexts/BibleContext";
 
 function BooksDropdown({ onChange, onBlur }) {
+  const { selectedBook } = useBibleContext();
   const options = [
     { value: "Genesis", label: "Genesis", chapters: 50 },
     { value: "Exodus", label: "Exodus", chapters: 40 },
@@ -78,6 +80,7 @@ function BooksDropdown({ onChange, onBlur }) {
         onChange={onChange}
         placeholder={"Genesis"}
         isSearchable={true}
+        value={selectedBook}
         onBlur={() => {
           onBlur();
         }}

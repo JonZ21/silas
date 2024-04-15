@@ -6,7 +6,7 @@ function App() {
     <div className="w-full h-full bg-gray-400 ">
       <Navbar />
       <div className="flex flex-row items-center justify-center">
-        <div className="w-1/2">
+        <div className="w-1/2 mt-3">
           <Bible />
         </div>
         <div className="w-1/2">

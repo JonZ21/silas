@@ -3,6 +3,7 @@ import Loading from "./Loading";
 import BooksDropdown from "./BooksDropdown";
 import { useBibleContext } from "../contexts/BibleContext";
 import ChaptersDropdown from "./ChaptersDropdown";
+import { fetchESVPassage } from "../services/api";
 
 const Bible = () => {
   const { selectedBook, setSelectedBook, setSelectedChapter, selectedChapter } =
@@ -10,12 +11,38 @@ const Bible = () => {
   const [showChapters, setShowChapters] = useState(false);
   const [chapterOptions, setChapterOptions] = useState([]);
   const [isBookDropdownFocused, setIsBookDropdownFocused] = useState(false);
+  const [content, setContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const contentRef = useRef(null);
 
   useEffect(() => {
     if (selectedBook) {
       setChapterOptions(createChapterOptions(selectedBook));
     }
   }, [selectedBook]);
+
+  useEffect(() => {
+    const fetchPassage = async () => {
+      try {
+        setIsLoading(true);
+        const passage = await fetchESVPassage(
+          selectedBook.value,
+          selectedChapter.value
+        );
+        setIsLoading(false);
+        setContent(passage);
+        setTimeout(() => {
+          if (contentRef.current) {
+            contentRef.current.scrollTo({ behavior: "smooth", top: 0 });
+          }
+        }, 100);
+      } catch (error) {
+        setIsLoading(false);
+        console.error("Error fetching ESV passage:", error);
+      }
+    };
+    fetchPassage();
+  }, [selectedBook, selectedChapter]);
 
   const handleBookChange = (book) => {
     setSelectedBook(book);
@@ -58,10 +85,26 @@ const Bible = () => {
             />
           </div>
         </div>
-        <div className="flex items-center justify-center w-5/6 h-[30px]">
+        <div className="flex items-center justify-start w-5/6 h-[700px] flex-col">
           <h1 className="text-2xl font-bold">
             {selectedBook.label} {selectedChapter.label}
           </h1>
+          {isLoading ? (
+            <div className="h-[550px] flex justify-center items-center">
+              <Loading />
+            </div>
+          ) : (
+            content &&
+            content.passages &&
+            content.passages.length > 0 && (
+              <div
+                className="w-full h-[550px] overflow-auto mt-4 text-center p-3"
+                ref={contentRef}
+              >
+                <p>{content.passages[0]}</p>
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>
