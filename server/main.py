@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+import re
 
 # Load environment variables from .env file
 load_dotenv()
@@ -11,6 +13,8 @@ load_dotenv()
 esv_api_key = os.getenv("ESV_API_KEY")
 
 app = FastAPI()
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,32 +26,24 @@ app.add_middleware(
 
 
 @app.get("/get_esv/{book}/{chapter}")
-async def get_esv(book: str, chapter: int):
+async def get_esv(book: str, chapter: str):
     url = "https://api.esv.org/v3/passage/text/"
     params = {
         "q": f"{book} {chapter}",
-        "include-passage-references": "false",
-        "include-verse-numbers": "false",
-        "include-footnotes": "false",
-        "include-footnote-body": "false",
-        "include-headings": "false",
-        "include-subheadings": "false",
-        "include-surrounding-chapters": "false",
-        "include-word-ids": "false",
-        "include-chapter-numbers": "false",
-        "include-verse-ids": "true",
-        "include-section-headings": "false",
-        "include-short-copyright": "false"
+        "include-passage-references": False,
+        "include-footnotes": False,
     }
     headers = {
         "Authorization": f"Token {esv_api_key}"
     }
     response = requests.get(url, params=params, headers=headers)
+    pattern = re.compile(r'\]\s*([^][]+)(?=\s*\[|$)')
+
     if response.status_code == 200:
-        return response.json()  # Return the JSON response from the ESV API
+        response = response.json()
+        # Find all matches and store them in a list
+        verses = pattern.findall(response['passages'][0])
+        return {'data': verses}
     else:
         raise HTTPException(status_code=response.status_code, detail="Failed to retrieve ESV passage")
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}

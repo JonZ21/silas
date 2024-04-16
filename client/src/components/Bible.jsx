@@ -12,6 +12,7 @@ const Bible = () => {
   const [chapterOptions, setChapterOptions] = useState([]);
   const [isBookDropdownFocused, setIsBookDropdownFocused] = useState(false);
   const [content, setContent] = useState("");
+  const [verses, setVerses] = useState(["", ""]);
   const [isLoading, setIsLoading] = useState(false);
   const contentRef = useRef(null);
 
@@ -30,7 +31,9 @@ const Bible = () => {
           selectedChapter.value
         );
         setIsLoading(false);
-        setContent(passage);
+        setVerses(passage.data);
+        console.log("passage: ", passage);
+        setContent("passage");
         setTimeout(() => {
           if (contentRef.current) {
             contentRef.current.scrollTo({ behavior: "smooth", top: 0 });
@@ -91,19 +94,42 @@ const Bible = () => {
           </h1>
           {isLoading ? (
             <div className="h-[550px] flex justify-center items-center">
+              {" "}
+              {/* TODO: need to fix height */}
               <Loading />
             </div>
           ) : (
-            content &&
-            content.passages &&
-            content.passages.length > 0 && (
+            // content &&
+            // content.passages &&
+            // content.passages.length > 0 && (
+            //   <div
+            //     className="w-full h-[550px] overflow-auto mt-4 text-center p-3"
+            //     ref={contentRef}
+            //   >
+            //     <p>{content.passages[0]}</p>
+            //   </div>
+            // )
+            verses.map((verse, index) => (
               <div
-                className="w-full h-[550px] overflow-auto mt-4 text-center p-3"
-                ref={contentRef}
+                key={index}
+                className="flex items-center justify-start w-full"
+                onClick={() => {
+                  console.log(
+                    "clicked " +
+                      selectedBook.value +
+                      " " +
+                      selectedChapter.value +
+                      ":" +
+                      (index + 1)
+                  );
+                }}
               >
-                <p>{content.passages[0]}</p>
+                <p className="text-sm hover:bg-gray-300">
+                  {index + 1} {verse}{" "}
+                </p>
+                {/* <p className="text-lg font-serif font-normal">{verse}</p> */}
               </div>
-            )
+            ))
           )}
         </div>
       </div>
