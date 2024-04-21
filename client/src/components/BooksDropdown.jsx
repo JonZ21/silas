@@ -2,8 +2,24 @@ import React from "react";
 import Select from "react-select";
 import { useBibleContext } from "../contexts/BibleContext";
 
-function BooksDropdown({ onChange, onBlur }) {
-  const { selectedBook } = useBibleContext();
+function BooksDropdown({ isBookDropdownFocused, setIsBookDropdownFocused }) {
+  const { selectedBook, setSelectedBook } = useBibleContext();
+
+  const handleBookChange = (book) => {
+    setSelectedBook(book);
+    setSelectedChapter({ value: 1, label: "1" });
+    setShowChapters(true);
+  };
+
+  const onBlur = () => {
+    setIsBookDropdownFocused(false);
+    setTimeout(() => {
+      if (!isBookDropdownFocused) {
+        setShowChapters(false);
+      }
+    }, 100);
+  };
+
   const options = [
     { value: "Genesis", label: "Genesis", chapters: 50 },
     { value: "Exodus", label: "Exodus", chapters: 40 },
@@ -74,10 +90,10 @@ function BooksDropdown({ onChange, onBlur }) {
   ];
 
   return (
-    <div className="w-[200px]">
+    <div className="w-[150px]">
       <Select
         options={options}
-        onChange={onChange}
+        onChange={handleBookChange}
         placeholder={"Genesis"}
         isSearchable={true}
         value={selectedBook}

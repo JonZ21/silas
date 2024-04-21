@@ -13,6 +13,7 @@ export const BibleProvider = ({ children }) => {
     label: "1",
   });
   const [selectedVerse, setSelectedVerse] = useState(null);
+  const [selectedVersion, setSelectedVersion] = useState("ESV");
 
   return (
     <BibleContext.Provider
@@ -23,6 +24,8 @@ export const BibleProvider = ({ children }) => {
         setSelectedChapter,
         selectedVerse,
         setSelectedVerse,
+        selectedVersion,
+        setSelectedVersion,
       }}
     >
       {children}

@@ -4,6 +4,7 @@ import BooksDropdown from "./BooksDropdown";
 import { useBibleContext } from "../contexts/BibleContext";
 import ChaptersDropdown from "./ChaptersDropdown";
 import { fetchESVPassage } from "../services/api";
+import VersionDropdown from "./VersionDropdown";
 
 const Bible = () => {
   const { selectedBook, setSelectedBook, setSelectedChapter, selectedChapter } =
@@ -47,12 +48,6 @@ const Bible = () => {
     fetchPassage();
   }, [selectedBook, selectedChapter]);
 
-  const handleBookChange = (book) => {
-    setSelectedBook(book);
-    setSelectedChapter({ value: 1, label: "1" });
-    setShowChapters(true);
-  };
-
   const createChapterOptions = (book) => {
     return Array.from({ length: book.chapters }, (v, k) => ({
       value: k + 1,
@@ -64,20 +59,14 @@ const Bible = () => {
     setSelectedChapter(chapter);
   };
 
-  const onBlur = () => {
-    setIsBookDropdownFocused(false);
-    setTimeout(() => {
-      if (!isBookDropdownFocused) {
-        setShowChapters(false);
-      }
-    }, 100);
-  };
-
   return (
     <div className="w-full h-screen bg-slate-50 flex justify-center items-center flex-col">
       <div className="w-5/6 h-5/6 bg-white shadow-md rounded-3xl flex flex-col items-center overflow-hidden">
         <div className="w-5/6 h-[100px] flex items-center justify-start mt-3">
-          <BooksDropdown onChange={handleBookChange} onBlur={onBlur} />
+          <BooksDropdown
+            isBookDropdownFocused={isBookDropdownFocused}
+            setIsBookDropdownFocused={setIsBookDropdownFocused}
+          />
           <div className=" ml-4">
             <ChaptersDropdown
               onChange={handleChapterChange}
@@ -86,6 +75,9 @@ const Bible = () => {
               chapterOptions={chapterOptions}
               setIsBookDropdownFocused={setIsBookDropdownFocused}
             />
+          </div>
+          <div className="ml-4">
+            <VersionDropdown />
           </div>
         </div>
         <div className="flex items-center justify-start w-5/6 flex-col h-full">
