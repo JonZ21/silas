@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
   return (
-    <div className="w-full h-full bg-gray-400 ">
+    <div className="w-full h-screen bg-red-400 overflow-hidden">
       <Navbar />
       <div className="flex flex-row items-center justify-center">
         <div className="w-1/2 mt-3">
