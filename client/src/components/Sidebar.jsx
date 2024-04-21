@@ -46,13 +46,14 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="w-full h-screen bg-slate-100 flex justify-center items-center">
+    <div className="w-full h-screen bg-slate-100 flex flex-col justify-center items-center">
       <Box
         sx={{
-          width: "80%",
+          width: "90%",
           background: "white",
           borderRadius: 3,
-          boxShadow: 10,
+          boxShadow: 3,
+          height: "60%",
         }}
       >
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -61,9 +62,9 @@ const Sidebar = () => {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
+            <Tab label="Verse" {...a11yProps(0)} />
+            <Tab label="Chapter" {...a11yProps(1)} />
+            <Tab label="Book" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
@@ -75,6 +76,18 @@ const Sidebar = () => {
         <CustomTabPanel value={value} index={2}>
           Item Three
         </CustomTabPanel>
+      </Box>
+      <Box
+        sx={{
+          width: "90%",
+          background: "white",
+          borderRadius: 3,
+          boxShadow: 3,
+          height: "20%",
+          marginTop: "20px",
+        }}
+      >
+        <Typography variant="h4"></Typography>
       </Box>
     </div>
   );

@@ -7,8 +7,14 @@ import { fetchESVPassage } from "../services/api";
 import VersionDropdown from "./VersionDropdown";
 
 const Bible = () => {
-  const { selectedBook, setSelectedBook, setSelectedChapter, selectedChapter } =
-    useBibleContext();
+  const {
+    selectedBook,
+    setSelectedBook,
+    setSelectedChapter,
+    selectedChapter,
+    selectedVerse,
+    setSelectedVerse,
+  } = useBibleContext();
   const [showChapters, setShowChapters] = useState(false);
   const [chapterOptions, setChapterOptions] = useState([]);
   const [isBookDropdownFocused, setIsBookDropdownFocused] = useState(false);
@@ -97,8 +103,14 @@ const Bible = () => {
                 {verses.map((verse, index) => (
                   <span
                     key={index}
-                    className=" hover:bg-slate-300 cursor-pointer"
-                    onClick={() => {}}
+                    className={`hover:bg-slate-300 ${
+                      index == selectedVerse?.index
+                        ? "bg-slate-300"
+                        : "bg-white"
+                    } cursor-pointer`}
+                    onClick={() => {
+                      setSelectedVerse({ index: index, verse: verse });
+                    }}
                   >
                     {index + 1} {verse}
                   </span>
