@@ -93,7 +93,7 @@ const Bible = () => {
             {selectedBook.label} {selectedChapter.label}
           </h1>
 
-          <div className="overflow-scroll mb-20 pr-10 text-center">
+          <div className="overflow-scroll mb-20 pr-10 text-center text-wrap">
             {isLoading ? (
               <div className="h-[550px] flex justify-center items-center">
                 {" "}
@@ -101,27 +101,17 @@ const Bible = () => {
                 <Loading />
               </div>
             ) : (
-              verses.map((verse, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-start w-full"
-                  onClick={() => {
-                    console.log(
-                      "clicked " +
-                        selectedBook.value +
-                        " " +
-                        selectedChapter.value +
-                        ":" +
-                        (index + 1)
-                    );
-                  }}
-                >
-                  <p className="text-sm hover:bg-gray-300">
-                    {index + 1} {verse}{" "}
-                  </p>
-                  {/* <p className="text-lg font-serif font-normal">{verse}</p> */}
-                </div>
-              ))
+              <p>
+                {verses.map((verse, index) => (
+                  <span
+                    key={index}
+                    className=" hover:bg-slate-300 cursor-pointer"
+                    onClick={() => {}}
+                  >
+                    {index + 1} {verse}
+                  </span>
+                ))}
+              </p>
             )}
           </div>
         </div>
