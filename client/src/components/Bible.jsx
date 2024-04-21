@@ -75,8 +75,8 @@ const Bible = () => {
 
   return (
     <div className="w-full h-screen bg-slate-50 flex justify-center items-center flex-col">
-      <div className="w-5/6 h-5/6 bg-white shadow-md rounded-3xl flex flex-col items-center">
-        <div className="w-5/6 h-[100px] flex items-center justify-start">
+      <div className="w-5/6 h-5/6 bg-white shadow-md rounded-3xl flex flex-col items-center overflow-hidden">
+        <div className="w-5/6 h-[100px] flex items-center justify-start mt-3">
           <BooksDropdown onChange={handleBookChange} onBlur={onBlur} />
           <div className=" ml-4">
             <ChaptersDropdown
@@ -88,49 +88,42 @@ const Bible = () => {
             />
           </div>
         </div>
-        <div className="flex items-center justify-start w-5/6 h-[700px] flex-col">
-          <h1 className="text-2xl font-bold">
+        <div className="flex items-center justify-start w-5/6 flex-col h-full">
+          <h1 className="text-2xl font-bold m-3">
             {selectedBook.label} {selectedChapter.label}
           </h1>
-          {isLoading ? (
-            <div className="h-[550px] flex justify-center items-center">
-              {" "}
-              {/* TODO: need to fix height */}
-              <Loading />
-            </div>
-          ) : (
-            // content &&
-            // content.passages &&
-            // content.passages.length > 0 && (
-            //   <div
-            //     className="w-full h-[550px] overflow-auto mt-4 text-center p-3"
-            //     ref={contentRef}
-            //   >
-            //     <p>{content.passages[0]}</p>
-            //   </div>
-            // )
-            verses.map((verse, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-start w-full"
-                onClick={() => {
-                  console.log(
-                    "clicked " +
-                      selectedBook.value +
-                      " " +
-                      selectedChapter.value +
-                      ":" +
-                      (index + 1)
-                  );
-                }}
-              >
-                <p className="text-sm hover:bg-gray-300">
-                  {index + 1} {verse}{" "}
-                </p>
-                {/* <p className="text-lg font-serif font-normal">{verse}</p> */}
+
+          <div className="overflow-scroll mb-20 pr-10 text-center">
+            {isLoading ? (
+              <div className="h-[550px] flex justify-center items-center">
+                {" "}
+                {/* TODO: need to fix height */}
+                <Loading />
               </div>
-            ))
-          )}
+            ) : (
+              verses.map((verse, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-start w-full"
+                  onClick={() => {
+                    console.log(
+                      "clicked " +
+                        selectedBook.value +
+                        " " +
+                        selectedChapter.value +
+                        ":" +
+                        (index + 1)
+                    );
+                  }}
+                >
+                  <p className="text-sm hover:bg-gray-300">
+                    {index + 1} {verse}{" "}
+                  </p>
+                  {/* <p className="text-lg font-serif font-normal">{verse}</p> */}
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>

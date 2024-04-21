@@ -1,5 +1,6 @@
 import Bible from "./components/Bible";
 import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 
 function App() {
   return (
@@ -10,10 +11,7 @@ function App() {
           <Bible />
         </div>
         <div className="w-1/2">
-          <h1 className="text-4xl font-bold text-white font-mono pt-10">
-            {" "}
-            Loading Silas
-          </h1>
+          <Sidebar />
         </div>
       </div>
     </div>
