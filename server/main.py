@@ -5,15 +5,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import re
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 
 
 load_dotenv()
 
-uri = os.getenv("MONGO_URI")
-
-client = MongoClient(uri, server_api=ServerApi("1"))
 
 # Get the ESV API key from the environment variables
 esv_api_key = os.getenv("ESV_API_KEY")

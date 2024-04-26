@@ -4,6 +4,8 @@ import time
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+from bible.bible_interface import add_episode
+
 
 load_dotenv()
 
@@ -45,6 +47,23 @@ def scrape_episode_data(episode_url, episode_title):
     )
 
     print("Content: " + completion.choices[0].message.content)
+
+    response = client.embeddings.create(
+        input=completion.choices[0].message.content,
+        model="text-embedding-3-small",
+    )
+
+    metadata = {
+        "title": episode_title,
+        "url": episode_url,
+        "date": date,
+        "episode_number": episode_number,
+    }
+
+    embedding = {"embeddings": response.data[0].embedding, "metadata": metadata}
+    print("bruh")
+    print(embedding)
+    bible_interface.add_episode(embedding)
 
 
 def scrape_all_episodes():
