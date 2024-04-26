@@ -4,81 +4,138 @@ import time
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
-from bible.bible_interface import add_episode
-
+from bible_interface import add_episode, collection
 
 load_dotenv()
-
 
 base_url = "https://www.desiringgod.org"
 episodes_url = f"{base_url}/ask-pastor-john"
 headers = {"User-Agent": "Mozilla/5.0"}
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+prev_episode = 0
 
 
-def get_soup(url):
-    response = requests.get(url, headers=headers)
-    # The User-Agent header is used to identify the browser making the request. Some websites block requests that don't have a User-Agent header, so adding one can help avoid this issue.
-    return BeautifulSoup(response.content, "html.parser")
-
-
-def scrape_episode_data(episode_url, episode_title):
-    soup = get_soup(episode_url)
-    episode = soup.find("div", class_="episode-number").text.strip()
-    episode_number = episode.split(" ")[1].strip()
-    date = soup.find("time").text.strip()
-    text = soup.find("div", class_="resource__body").text.strip()
-
-    # print(date)
-    # print(episode_number)
-    # print(text)
-    # print(episode_title)
-
-    completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {
-                "role": "system",
-                "content": "You are a Christian Bible Reading assistant. Given the title the audio transcript of a podcast episode, write a concise summary of the episode. Include all the verses referenced in the episode.",
-            },
-            {"role": "user", "content": f"{text}"},
-        ],
-    )
-
-    print("Content: " + completion.choices[0].message.content)
+def get_vector(verse, question):
 
     response = client.embeddings.create(
-        input=completion.choices[0].message.content,
+        input=f"{verse} {question}",
         model="text-embedding-3-small",
     )
 
-    metadata = {
-        "title": episode_title,
-        "url": episode_url,
-        "date": date,
-        "episode_number": episode_number,
-    }
+    return response.data[0].embedding
 
-    embedding = {"embeddings": response.data[0].embedding, "metadata": metadata}
-    print("bruh")
-    print(embedding)
-    bible_interface.add_episode(embedding)
+
+def get_top_10(vector):
+
+    results = collection.aggregate(
+        [
+            {
+                "$vectorSearch": {
+                    "index": "vector_index",
+                    "path": "embeddings",
+                    "queryVector": vector,
+                    "numCandidates": 100,
+                    "limit": 10,
+                }
+            }
+        ]
+    )
+
+    response = []
+    for result in results:
+        response.append(result["metadata"])
+
+    return response
+
+
+def get_soup(url):
+    try:
+        print(f"Requesting URL: {url}")
+        response = requests.get(
+            url, headers=headers, timeout=30
+        )  # Added timeout of 30 seconds
+        print("Response received")
+        return BeautifulSoup(response.content, "html.parser")
+    except requests.Timeout:
+        print("Request timed out")
+        return None
+    except Exception as e:
+        print(f"Error fetching URL: {url}. Error: {e}")
+        return None
+
+
+def scrape_episode_data(episode_url, episode_title):
+    print(f"Scraping data for {episode_title}")
+    try:
+        soup = get_soup(episode_url)
+        if soup is None:
+            print(f"Failed to get content for URL: {episode_url}")
+            return
+
+        episode = soup.find("div", class_="episode-number").text.strip()
+        episode_number = episode.split(" ")[1].strip()
+        date = soup.find("time").text.strip()
+        text = soup.find("div", class_="resource__body").text.strip()
+
+        print(f"Episode: {episode_number}, Date: {date}")
+
+        if episode_number == "Episode":
+            if int(prev_episode) >= 630:
+                print(f"Skipped special episode {prev_episode}")
+                return
+            episode_number = "0"
+        elif int(episode_number) >= 630:
+            prev_episode = episode_number
+            print(f"Skipped episode {episode_number}")
+            return
+
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a Christian Bible Reading assistant. Given the title the audio transcript of a podcast episode, write a concise summary of the episode. Include all the verses referenced in the episode.",
+                },
+                {"role": "user", "content": f"{text}"},
+            ],
+        )
+
+        response = client.embeddings.create(
+            input=completion.choices[0].message.content,
+            model="text-embedding-3-small",
+        )
+
+        metadata = {
+            "title": episode_title,
+            "url": episode_url,
+            "date": date,
+            "episode_number": episode_number,
+        }
+
+        embedding = {"embeddings": response.data[0].embedding, "metadata": metadata}
+        if embedding:
+            add_episode(embedding)
+            print(f"Added episode {episode_number}")
+    except Exception as e:
+        print(e)
+        print(f"Error processing episode: {episode_url}")
 
 
 def scrape_all_episodes():
     all_episodes = []
     soup = get_soup(episodes_url)
+    if soup is None:
+        return all_episodes
+
     while True:
-        # Extract episode URLs and scrape each episode
         episode_links = soup.select(".tile-title")
         for link in episode_links:
             href = link.a.get("href")
             episode_url = base_url + href
             title = link.a.text.strip()
-            episode_data = scrape_episode_data(episode_url, title)
-            all_episodes.append(episode_url)
-        # Check if there's a "more episodes" button and click it
+            scrape_episode_data(episode_url, title)
+
         next_button = soup.find("a", {"id": "load_more_link"})
         if next_button:
             next_button_url = base_url + next_button["href"]
@@ -89,18 +146,9 @@ def scrape_all_episodes():
     return all_episodes
 
 
-episodes_data = scrape_all_episodes()
-# print("size: " + str(len(episodes_data)))
-# scrape_episode_data("https://www.desiringgod.org/interviews/am-i-confident-or-arrogant")
+# episodes_data = scrape_all_episodes()
+# print("Scraping complete")
 
-# Process episodes_data as needed (e.g., save to a file)
+topten = get_top_10(get_vector("John 3:16", "What is the meaning of life?"))
 
-
-# stream = client.chat.completions.create(
-#     model="gpt-3.5-turbo",
-#     messages=[{"role": "user", "content": "Say this is a test"}],
-#     stream=True,
-# )
-# for chunk in stream:
-#     if chunk.choices[0].delta.content is not None:
-#         print(chunk.choices[0].delta.content, end="")
+print("top 10 results:" + str(topten))
