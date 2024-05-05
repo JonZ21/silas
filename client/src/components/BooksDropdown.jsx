@@ -3,7 +3,7 @@ import Select from "react-select";
 import { useBibleContext } from "../contexts/BibleContext";
 
 function BooksDropdown({ isBookDropdownFocused, setIsBookDropdownFocused }) {
-  const { selectedBook, setSelectedBook } = useBibleContext();
+  const { selectedBook, setSelectedBook, setShowChapters } = useBibleContext();
 
   const handleBookChange = (book) => {
     setSelectedBook(book);

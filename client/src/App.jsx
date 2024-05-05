@@ -1,6 +1,6 @@
-import Bible from "./components/Bible";
+import Bible from "./pages/Bible";
 import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./pages/Sidebar";
 import { useState, useEffect } from "react";
 
 function App() {

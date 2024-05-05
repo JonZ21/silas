@@ -1,10 +1,16 @@
 import os
 from dotenv import load_dotenv
 import requests
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import re
+import sys
+
+sys.path.append("../utils/")
+sys.path.append("../bible/")
+from utils import vector_utils
+from bible import bible_interface
 
 
 load_dotenv()
@@ -18,7 +24,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173"
+        "http://localhost:5174"
     ],  # Update with your React app's URL during development
     allow_credentials=True,
     allow_methods=["GET", "POST"],
@@ -42,8 +48,17 @@ async def get_esv(book: str, chapter: str):
         response = response.json()
         # Find all matches and store them in a list
         verses = pattern.findall(response["passages"][0])
+        print(verses)
         return {"data": verses}
     else:
         raise HTTPException(
             status_code=response.status_code, detail="Failed to retrieve ESV passage"
         )
+
+
+@app.get("/related-resources/")
+async def get_apj(verse: str = Query(None), question: str = Query(default="")):
+    print(verse, question)
+    vector = vector_utils.get_vector(verse, question)
+    response = vector_utils.get_top_10(vector, bible_interface.collection)
+    return {"data": response}

@@ -4,6 +4,10 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Podcasts from "../components/Podcasts";
+import { TextField } from "@mui/material";
+import Filters from "../components/Filters";
+import ResourceList from "../components/ResourceList";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,29 +57,15 @@ const Sidebar = () => {
           background: "white",
           borderRadius: 3,
           boxShadow: 3,
-          height: "60%",
+          height: "20%",
+          marginBottom: "20px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="Verse" {...a11yProps(0)} />
-            <Tab label="Chapter" {...a11yProps(1)} />
-            <Tab label="Book" {...a11yProps(2)} />
-          </Tabs>
-        </Box>
-        <CustomTabPanel value={value} index={0}>
-          Item One
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          Item Two
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          Item Three
-        </CustomTabPanel>
+        <TextField id="outlined-basic" label="Search" variant="outlined" />
+        <Typography variant="h4"></Typography>
       </Box>
       <Box
         sx={{
@@ -83,11 +73,20 @@ const Sidebar = () => {
           background: "white",
           borderRadius: 3,
           boxShadow: 3,
-          height: "20%",
-          marginTop: "20px",
+          height: "60%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "relative",
+          flexDirection: "column",
         }}
       >
-        <Typography variant="h4"></Typography>
+        <div className=" w-full h-[100px] bg-blue-400 rounded-md flex justify-evenly">
+          <Filters />
+        </div>
+        <div className="flex-grow bg-red-400 w-full">
+          <ResourceList />
+        </div>
       </Box>
     </div>
   );

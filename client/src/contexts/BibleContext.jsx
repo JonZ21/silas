@@ -13,6 +13,7 @@ export const BibleProvider = ({ children }) => {
     label: "1",
   });
   const [selectedVerse, setSelectedVerse] = useState(null);
+  const [selectedPassage, setSelectedPassage] = useState(""); // SelectedPassage is the book, chapter, and verse range
   const [selectedVersion, setSelectedVersion] = useState("ESV");
 
   return (
@@ -26,6 +27,8 @@ export const BibleProvider = ({ children }) => {
         setSelectedVerse,
         selectedVersion,
         setSelectedVersion,
+        selectedPassage,
+        setSelectedPassage,
       }}
     >
       {children}

@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import Loading from "./Loading";
-import BooksDropdown from "./BooksDropdown";
+import Loading from "../components/Loading";
+import BooksDropdown from "../components/BooksDropdown";
 import { useBibleContext } from "../contexts/BibleContext";
-import ChaptersDropdown from "./ChaptersDropdown";
+import ChaptersDropdown from "../components/ChaptersDropdown";
 import { fetchESVPassage } from "../services/api";
-import VersionDropdown from "./VersionDropdown";
+import VersionDropdown from "../components/VersionDropdown";
 
 const Bible = () => {
   const {
@@ -14,6 +14,7 @@ const Bible = () => {
     selectedChapter,
     selectedVerse,
     setSelectedVerse,
+    setSelectedPassage,
   } = useBibleContext();
   const [showChapters, setShowChapters] = useState(false);
   const [chapterOptions, setChapterOptions] = useState([]);
@@ -110,6 +111,23 @@ const Bible = () => {
                     } cursor-pointer`}
                     onClick={() => {
                       setSelectedVerse({ index: index, verse: verse });
+                      console.log(
+                        "selectedVerse: " +
+                          verse +
+                          "selectedBook" +
+                          selectedBook.label +
+                          " selectedChapter " +
+                          selectedChapter.label +
+                          " selected Verse Number: " +
+                          (index + 1).toString()
+                      );
+                      setSelectedPassage(
+                        selectedBook.label +
+                          " " +
+                          selectedChapter.label +
+                          ":" +
+                          (index + 1).toString()
+                      );
                     }}
                   >
                     {index + 1} {verse}
