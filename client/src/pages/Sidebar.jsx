@@ -37,17 +37,6 @@ CustomTabPanel.propTypes = {
 const Sidebar = () => {
   const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  }
-
   return (
     <div className="w-full h-screen bg-slate-100 flex flex-col justify-center items-center">
       <Box
@@ -80,10 +69,10 @@ const Sidebar = () => {
           flexDirection: "column",
         }}
       >
-        <div className=" w-full h-[100px] bg-blue-400 rounded-md flex justify-evenly">
+        <div className=" w-full h-1/4 rounded-md flex justify-evenly">
           <Filters />
         </div>
-        <div className="flex-grow bg-red-400 w-full">
+        <div className="h-3/4 w-full">
           <ResourceList />
         </div>
       </Box>
