@@ -31,11 +31,11 @@ const ResourceList = () => {
   }, [selectedPassage]);
 
   return (
-    <div className="w-full h-full overflow-scroll">
-      <div className="flex flex-col w-full h-full bg-blue-300 overflow-y-scroll">
+    <div className="w-full h-full overflow-y-scroll">
+      <div className="flex flex-col w-full h-full">
         {resources && resources.length > 0 ? (
           resources.map((resource, index) => (
-            <div key={index} className="p-4 border-b border-blue-500">
+            <div key={index} className="p-4 border-b">
               <div className="text-lg font-bold">{resource.title}</div>
               <div className="text-sm">{resource.author}</div>
             </div>

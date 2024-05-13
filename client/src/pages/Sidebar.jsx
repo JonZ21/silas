@@ -7,34 +7,10 @@ import Box from "@mui/material/Box";
 import { TextField } from "@mui/material";
 import Filters from "../components/Filters";
 import ResourceList from "../components/ResourceList";
-
-function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-CustomTabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
+import { useBibleContext } from "../contexts/BibleContext";
 
 const Sidebar = () => {
+  const { selectedPassage } = useBibleContext();
   const [value, setValue] = useState(0);
 
   return (
@@ -69,10 +45,23 @@ const Sidebar = () => {
           flexDirection: "column",
         }}
       >
-        <div className=" w-full h-1/4 rounded-md flex justify-evenly">
-          <Filters />
+        <div className=" w-full h-1/5 rounded-md flex justify-evenly border-b">
+          {selectedPassage ? (
+            <div className="flex items-center justify-center">
+              <h1 className="text-2xl font-sans-serif">
+                Showing Resources on {selectedPassage}
+              </h1>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center">
+              <h1 className="text-2xl font-sans-serif">
+                Click a verse or ask a question to get started!
+              </h1>
+            </div>
+          )}
+          {/* <Filters /> */}
         </div>
-        <div className="h-3/4 w-full">
+        <div className="h-4/5 w-full">
           <ResourceList />
         </div>
       </Box>

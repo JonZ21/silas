@@ -92,7 +92,7 @@ const Bible = () => {
             {selectedBook.label} {selectedChapter.label}
           </h1>
 
-          <div className="overflow-scroll mb-20 pr-10 text-center text-wrap">
+          <div className="overflow-y-scroll mb-20 pr-10 text-center text-wrap">
             {isLoading ? (
               <div className="h-[550px] flex justify-center items-center">
                 {" "}
