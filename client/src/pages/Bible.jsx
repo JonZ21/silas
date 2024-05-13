@@ -110,17 +110,16 @@ const Bible = () => {
                         : "bg-white"
                     } cursor-pointer`}
                     onClick={() => {
+                      if (
+                        index == selectedVerse?.index &&
+                        selectedVerse?.verse == verse
+                      ) {
+                        setSelectedVerse(null);
+                        setSelectedPassage("");
+                        return;
+                      }
+
                       setSelectedVerse({ index: index, verse: verse });
-                      console.log(
-                        "selectedVerse: " +
-                          verse +
-                          "selectedBook" +
-                          selectedBook.label +
-                          " selectedChapter " +
-                          selectedChapter.label +
-                          " selected Verse Number: " +
-                          (index + 1).toString()
-                      );
                       setSelectedPassage(
                         selectedBook.label +
                           " " +

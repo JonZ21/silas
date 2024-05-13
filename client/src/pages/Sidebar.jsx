@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { TextField } from "@mui/material";
@@ -11,7 +8,6 @@ import { useBibleContext } from "../contexts/BibleContext";
 
 const Sidebar = () => {
   const { selectedPassage } = useBibleContext();
-  const [value, setValue] = useState(0);
 
   return (
     <div className="w-full h-screen bg-slate-100 flex flex-col justify-center items-center">
