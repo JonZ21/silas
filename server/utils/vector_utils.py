@@ -33,7 +33,7 @@ def get_top_10(vector, collection):
         [
             {
                 "$vectorSearch": {
-                    "index": "vector_index",
+                    "index": "vector_index_source",
                     "path": "embeddings",
                     "queryVector": vector,
                     "numCandidates": 100,
@@ -42,7 +42,6 @@ def get_top_10(vector, collection):
             }
         ]
     )
-
     response = []
 
     for result in results:

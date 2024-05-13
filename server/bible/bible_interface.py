@@ -63,3 +63,18 @@ def add_episodes_bulk(episodes):
             print("No episodes to insert")
     except Exception as e:
         print(f"Error inserting episodes: {e}")
+
+
+def duplicate_collection(original_collection, new_collection_name):
+    """
+    Duplicate a MongoDB collection using aggregation.
+
+    Args:
+    - original_collection (str): Name of the original collection.
+    - new_collection_name (str): Name for the duplicated collection.
+    """
+    pipeline = [
+        {"$match": {}},  # Match all documents in the original collection
+        {"$out": new_collection_name},  # Create a new collection with the same data
+    ]
+    db[original_collection].aggregate(pipeline)

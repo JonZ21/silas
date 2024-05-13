@@ -16,7 +16,7 @@ export const fetchESVPassage = async (book, chapter) => {
   }
 };
 
-export const fetchRelated = async (verse, question = "") => {
+export const fetchResources = async (verse, question = "") => {
   try {
     const response = await api.get(`/related-resources/`, {
       params: {

@@ -4,7 +4,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Podcasts from "../components/Podcasts";
 import { TextField } from "@mui/material";
 import Filters from "../components/Filters";
 import ResourceList from "../components/ResourceList";

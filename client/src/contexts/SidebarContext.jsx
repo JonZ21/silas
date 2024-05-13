@@ -15,6 +15,7 @@ export const SidebarProvider = ({ children }) => {
         authorFilter,
         setAuthorFilter,
         resources,
+        setResources,
       }}
     >
       {children}
