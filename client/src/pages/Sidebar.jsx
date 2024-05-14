@@ -24,7 +24,7 @@ const Sidebar = () => {
           alignItems: "center",
         }}
       >
-        <TextField id="outlined-basic" label="Search" variant="outlined" />
+        <TextField id="outlined-basic" label="Ask Silas" variant="outlined" />
         <Typography variant="h4"></Typography>
       </Box>
       <Box
