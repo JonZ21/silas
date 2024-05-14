@@ -15,8 +15,6 @@ from bible import bible_interface
 
 load_dotenv()
 
-
-# Get the ESV API key from the environment variables
 esv_api_key = os.getenv("ESV_API_KEY")
 
 app = FastAPI()
@@ -24,8 +22,9 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5174"
-    ],  # Update with your React app's URL during development
+        "http://localhost:5173",
+        "https://silas-two.vercel.app/",
+    ],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
@@ -58,7 +57,6 @@ async def get_esv(book: str, chapter: str):
 
 @app.get("/related-resources/")
 async def get_apj(verse: str = Query(None), question: str = Query(default="")):
-    print(verse, question)
     vector = vector_utils.get_vector(verse, question)
     response = vector_utils.get_top_10(vector, bible_interface.collection)
     return {"data": response}
