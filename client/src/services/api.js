@@ -2,7 +2,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000", // Adjust the base URL as needed
+  // baseURL: "http://localhost:8000", // Adjust the base URL as needed
+  baseURL: "https://silas-server-b53a2a62dc8e.herokuapp.com/",
 });
 
 export const fetchESVPassage = async (book, chapter) => {
