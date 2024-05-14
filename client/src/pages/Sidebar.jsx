@@ -17,23 +17,7 @@ const Sidebar = () => {
           background: "white",
           borderRadius: 3,
           boxShadow: 3,
-          height: "20%",
-          marginBottom: "20px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TextField id="outlined-basic" label="Ask Silas" variant="outlined" />
-        <Typography variant="h4"></Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "90%",
-          background: "white",
-          borderRadius: 3,
-          boxShadow: 3,
-          height: "60%",
+          height: "84%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

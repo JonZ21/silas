@@ -66,6 +66,14 @@ const Bible = () => {
     setSelectedChapter(chapter);
   };
 
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen bg-slate-50 flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-screen bg-slate-50 flex justify-center items-center flex-col">
       <div className="w-5/6 h-5/6 bg-white shadow-md rounded-3xl flex flex-col items-center overflow-hidden">
@@ -93,47 +101,37 @@ const Bible = () => {
           </h1>
 
           <div className="overflow-y-scroll mb-20 pr-10 text-center text-wrap">
-            {isLoading ? (
-              <div className="h-[550px] flex justify-center items-center">
-                {" "}
-                {/* TODO: need to fix height */}
-                <Loading />
-              </div>
-            ) : (
-              <p>
-                {verses.map((verse, index) => (
-                  <span
-                    key={index}
-                    className={`hover:bg-slate-300 ${
-                      index == selectedVerse?.index
-                        ? "bg-slate-300"
-                        : "bg-white"
-                    } cursor-pointer`}
-                    onClick={() => {
-                      if (
-                        index == selectedVerse?.index &&
-                        selectedVerse?.verse == verse
-                      ) {
-                        setSelectedVerse(null);
-                        setSelectedPassage("");
-                        return;
-                      }
+            <p>
+              {verses.map((verse, index) => (
+                <span
+                  key={index}
+                  className={`hover:bg-slate-300 ${
+                    verse == selectedVerse?.verse ? "bg-slate-300" : "bg-white"
+                  } cursor-pointer`}
+                  onClick={() => {
+                    if (
+                      index == selectedVerse?.index &&
+                      selectedVerse?.verse == verse
+                    ) {
+                      setSelectedVerse(null);
+                      setSelectedPassage("");
+                      return;
+                    }
 
-                      setSelectedVerse({ index: index, verse: verse });
-                      setSelectedPassage(
-                        selectedBook.label +
-                          " " +
-                          selectedChapter.label +
-                          ":" +
-                          (index + 1).toString()
-                      );
-                    }}
-                  >
-                    {index + 1} {verse}
-                  </span>
-                ))}
-              </p>
-            )}
+                    setSelectedVerse({ index: index, verse: verse });
+                    setSelectedPassage(
+                      selectedBook.label +
+                        " " +
+                        selectedChapter.label +
+                        ":" +
+                        (index + 1).toString()
+                    );
+                  }}
+                >
+                  {index + 1} {verse}
+                </span>
+              ))}
+            </p>
           </div>
         </div>
       </div>
